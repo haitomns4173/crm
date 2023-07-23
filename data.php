@@ -11,15 +11,16 @@ if (!isset($_SESSION['loggedIn'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Lead Express Admin Dashboard</title>
+    <title>Data - Lead Express Admin Dashboard</title>
 
     <link rel="stylesheet" href="assets/css/bootstrap.css">
 
-    <link rel="stylesheet" href="assets/vendors/chartjs/Chart.min.css">
+    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
 
     <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+
 </head>
 
 <body>
@@ -33,7 +34,7 @@ if (!isset($_SESSION['loggedIn'])) {
                     <ul class="menu">
                         <li class='sidebar-title'>Main Menu</li>
 
-                        <li class="sidebar-item active ">
+                        <li class="sidebar-item">
                             <a href="index.php" class='sidebar-link'>
                                 <i data-feather="home" width="20"></i>
                                 <span>Dashboard</span>
@@ -47,7 +48,7 @@ if (!isset($_SESSION['loggedIn'])) {
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a href="data.php" class='sidebar-link'>
                                 <i data-feather="layers" width="20"></i>
                                 <span>Data</span>
@@ -96,77 +97,77 @@ if (!isset($_SESSION['loggedIn'])) {
 
             <div class="main-content container-fluid">
                 <div class="page-title">
-                    <h3>Profile Page</h3>
+                    <h3>Data Page</h3>
                     <p class="text-subtitle text-muted">Lead Express Private Limited</p>
+                    <a href="dataAdd.php"><button type="button" class="btn btn-primary">Add New Data</button></a>
                 </div>
                 <section class="section">
-                    <div class="row mb-2">
-                        <div class="col-12 col-md-3">
-                            <div class="card card-statistic">
-                                <div class="card-body p-0">
-                                    <div class="d-flex flex-column">
-                                        <div class='px-3 py-3 d-flex justify-content-between'>
-                                            <h3 class='card-title'>UPLOADED</h3>
-                                            <div class="card-right d-flex align-items-center">
-                                                <p> 50 </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="card">
+                        <div class="card-header">
+                            Agents Table
                         </div>
-                        <div class="col-12 col-md-3">
-                            <div class="card card-statistic">
-                                <div class="card-body p-0">
-                                    <div class="d-flex flex-column">
-                                        <div class='px-3 py-3 d-flex justify-content-between'>
-                                            <h3 class='card-title'>INSTALLED</h3>
-                                            <div class="card-right d-flex align-items-center">
-                                                <p>5322</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <div class="card card-statistic">
-                                <div class="card-body p-0">
-                                    <div class="d-flex flex-column">
-                                        <div class='px-3 py-3 d-flex justify-content-between'>
-                                            <h3 class='card-title'>CONFIRMED</h3>
-                                            <div class="card-right d-flex align-items-center">
-                                                <p>1,544</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <div class="card card-statistic">
-                                <div class="card-body p-0">
-                                    <div class="d-flex flex-column">
-                                        <div class='px-3 py-3 d-flex justify-content-between'>
-                                            <h3 class='card-title'>CANCELLED</h3>
-                                            <div class="card-right d-flex align-items-center">
-                                                <p>423</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <div class="card-body">
+                            <table class='table mb-0' id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>Full Name</th>
+                                        <th>Phone Number</th>
+                                        <th>Status</th>
+                                        <th>Installation Date & Time</th>
+                                        <th>No. of Solar</th>
+                                        <th>Staff</th>
+                                        <th>Verifier Comment</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    include 'php/sqlConnection.php';
 
-                    <div class="col-md-11">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Auto Generated Report</h4>
-                            </div>
-                            <div class="card-body">
-                                <div id="line"></div>
-                            </div>
+                                    $sql = "SELECT * FROM `data` WHERE staffName = '$_SESSION[username]' ORDER BY dataID DESC;";
+                                    $result = mysqli_query($conn, $sql);
+                                    while($row = mysqli_fetch_assoc($result)){
+                                        echo "<tr>";
+                                        echo "<td>$row[fullName]</td>";
+                                        echo "<td>$row[phoneNumber]</td>";
+                                        if($row['status'] == 2){
+                                            echo "<td><span class='badge bg-primary'>Confirmed</span></td>";
+                                        }
+                                        else if($row['status'] == 3){
+                                            echo "<td><span class='badge bg-success'>Installed</span></td>";
+                                        }
+                                        else if($row['status'] == 4){
+                                            echo "<td><span class='badge bg-info'>Rescheduled</span></td>";
+                                        }
+                                        else if($row['status'] == 3){
+                                            echo "<td><span class='badge bg-danger'>Cancelled</span></td>";
+                                        }
+                                        else{
+                                            echo "<td><span class='badge bg-light'>Pending</span></td>";
+                                        }
+                                        echo "<td>$row[installationDateTime]</td>";
+                                        echo "<td>$row[numberOfSolar]</td>";
+                                        echo "<td>$row[staffName]</td>";
+                                        if($row['verifierComment'] == ""){
+                                            echo "<td><i>No Comment</i></td>";
+                                        }
+                                        else{
+                                            echo "<td><i>$row[verifierComment]</i></td>";
+                                        }
+                                        echo "<td>
+                                        <a href='dataEdit.php?id=$row[dataID]'>
+                                        <button type='button' class='btn btn-primary'><i data-feather='edit-3' width='20'></i></button>
+                                        </a> 
+                                        
+                                        <a href='php/deleteData.php?id=$row[dataID]'>
+                                        <button type='button' class='btn btn-danger'><i data-feather='trash-2' width='20'></i></button>
+                                        </a>
+                                        </td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </section>
@@ -194,10 +195,10 @@ if (!isset($_SESSION['loggedIn'])) {
     <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="assets/js/app.js"></script>
 
-    <script src="assets/vendors/chartjs/Chart.min.js"></script>
-    <script src="assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/js/vendors.js"></script>
     <script src="assets/js/pages/dashboard.js"></script>
-    <script src="assets/js/pages/ui-apexchart.js"></script>
+
 
     <script src="assets/js/main.js"></script>
 </body>

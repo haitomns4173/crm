@@ -23,10 +23,12 @@ if (!isset($_POST['usernameInput'], $_POST['passwordInput'])) {
                 session_regenerate_id();
 
                 $_SESSION['loggedIn'] = TRUE;
-
                 $_SESSION['id'] = $userId;
                 $_SESSION['username'] = $username;
                 $_SESSION['userPermission'] = $userPermission;
+
+                $sql_login = "UPDATE `userdetails` SET `lastLogin`= CURRENT_TIMESTAMP WHERE `userIdentity` = $userId";
+                $result_login = mysqli_query($conn, $sql_login);
 
                 header('Location: ../index.php');
             } else {

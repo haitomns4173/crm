@@ -62,7 +62,6 @@ if (!isset($_SESSION['loggedIn'])) {
                                         </div>
                                     </div>
                                 </diV>
-                                <a href="auth-login.php">Have an account? Login</a>
                                 <div class="clearfix">
                                     <button type="submit" class="btn btn-primary float-end">Submit</button>
                                 </div>

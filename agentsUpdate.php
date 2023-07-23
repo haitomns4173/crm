@@ -11,7 +11,7 @@ if (!isset($_SESSION['loggedIn'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Lead Express Admin Dashboard</title>
+    <title>Agents Update - Lead Express Admin Dashboard</title>
 
     <link rel="stylesheet" href="assets/css/bootstrap.css">
 
@@ -40,7 +40,7 @@ if (!isset($_SESSION['loggedIn'])) {
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a href="agents.php" class='sidebar-link'>
                                 <i data-feather="users" width="20"></i>
                                 <span>Agents</span>
@@ -54,7 +54,7 @@ if (!isset($_SESSION['loggedIn'])) {
                             </a>
                         </li>
 
-                        <li class="sidebar-item active">
+                        <li class="sidebar-item">
                             <a href="profile.php" class='sidebar-link'>
                                 <i data-feather="user" width="20"></i>
                                 <span>Profile</span>
@@ -107,13 +107,19 @@ if (!isset($_SESSION['loggedIn'])) {
                                 </div>
                                 <?php
                                 include 'php/sqlConnection.php';
-                                $sql = "SELECT `userIdentity`, `userPermissionNumber`, `agentName`, `username` FROM `userdetails` WHERE userdetails.userIdentity = '$_SESSION[id]'";
-                                $result = mysqli_query($conn, $sql);
-                                $row = mysqli_fetch_assoc($result);
+
+                                if (isset($_GET['userId'])) {
+                                    $userId = $_GET['userId'];
+                                    $sql = "SELECT `userIdentity`, `userPermissionNumber`, `agentName`, `username` FROM `userdetails` WHERE userdetails.userIdentity = '$userId'";
+                                    $result = mysqli_query($conn, $sql);
+                                    $row = mysqli_fetch_assoc($result);
+                                } else {
+                                    echo "<script>alert('Error while updating User'); window.location.href='agents.php';</script>";
+                                }
                                 ?>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form action="php/updateUser.php" method="post" class="form">
+                                        <form action="php/updateAgents.php?userID=<?php echo $userId ?>" method="post" class="form">
                                             <div class="row">
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-group">
@@ -159,34 +165,6 @@ if (!isset($_SESSION['loggedIn'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="row match-height">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Migrations</h4>
-                                </div>
-
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <a href="php/backup.php"><button type="submit" class="btn btn-primary me-1 mb-1">Backup</button></a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <form action="php/restore.php" enctype="multipart/form-data" method="post" class="form">
-                                                        <input type="file" name="dbRestoreFile" id="file" class="form-control">
-                                                        <button type="submit" class="btn btn-primary me-1 mb-1">Restore</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                 </section>
             </div>
 

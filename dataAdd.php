@@ -11,7 +11,7 @@ if (!isset($_SESSION['loggedIn'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Lead Express Admin Dashboard</title>
+    <title>Data - Lead Express Admin Dashboard</title>
 
     <link rel="stylesheet" href="assets/css/bootstrap.css">
 
@@ -47,14 +47,14 @@ if (!isset($_SESSION['loggedIn'])) {
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a href="data.php" class='sidebar-link'>
                                 <i data-feather="layers" width="20"></i>
                                 <span>Data</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item active">
+                        <li class="sidebar-item">
                             <a href="profile.php" class='sidebar-link'>
                                 <i data-feather="user" width="20"></i>
                                 <span>Profile</span>
@@ -95,7 +95,7 @@ if (!isset($_SESSION['loggedIn'])) {
 
             <div class="main-content container-fluid">
                 <div class="page-title">
-                    <h3>Profile Page</h3>
+                    <h3>Data Page</h3>
                     <p class="text-subtitle text-muted">Lead Express Private Limited</p>
                 </div>
                 <section class="section">
@@ -103,54 +103,92 @@ if (!isset($_SESSION['loggedIn'])) {
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Your Profile</h4>
+                                    <h4 class="card-title">Add Data Details</h4>
                                 </div>
-                                <?php
-                                include 'php/sqlConnection.php';
-                                $sql = "SELECT `userIdentity`, `userPermissionNumber`, `agentName`, `username` FROM `userdetails` WHERE userdetails.userIdentity = '$_SESSION[id]'";
-                                $result = mysqli_query($conn, $sql);
-                                $row = mysqli_fetch_assoc($result);
-                                ?>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form action="php/updateUser.php" method="post" class="form">
+                                        <form action="php/addData.php" method="post" class="form">
                                             <div class="row">
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-group">
-                                                        <label for="first-name-column">Agent Name</label>
-                                                        <input type="text" id="first-name-column" class="form-control" placeholder="Agent Full Name" name="nameShow" value="<?php echo $row['agentName'] ?>">
+                                                        <label for="full-name-column">Full Name</label>
+                                                        <input type="text" id="full-name-column" class="form-control" placeholder="Customer Full Name" name="fullName">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-group">
-                                                        <label for="username-column">Username</label>
-                                                        <input type="text" id="username-column" class="form-control" placeholder="Agent Username" name="usernameShow" value="<?php echo $row['username'] ?>">
+                                                        <label for="email-column">Email</label>
+                                                        <input type="email" id="email-column" class="form-control" placeholder="Email" name="email">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-group">
-                                                        <label for="password-floating">Password</label>
-                                                        <input type="password" id="password-floating" class="form-control" placeholder="Agent Password" name="passwordShow" value="Why you want to see your own password?">
+                                                        <label for="phone-column">Phone Number</label>
+                                                        <input type="number" id="phone-column" class="form-control" placeholder="Phone Number" name="phoneNumber">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-group">
-                                                        <label for="user-type">Agent Type</label>
-                                                        <select name="userPermissionShow" id="user-type" class="form-control">
-                                                            <?php
-                                                            if ($row['userPermissionNumber'] == 1) {
-                                                                echo "<option value='1' selected>Central Supervisor</option>";
-                                                                echo "<option value='2'>Agent</option>";
-                                                            } else {
-                                                                echo "<option value='1'>Central Supervisor</option>";
-                                                                echo "<option value='2' selected>Agent</option>";
-                                                            }
-                                                            ?>
-                                                        </select>
+                                                        <label for="landline-column">Landline</label>
+                                                        <input type="number" id="landline-column" class="form-control" placeholder="Landline Number" name="landline">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="street-number-column">Street Number</label>
+                                                        <input type="number" id="street-number-column" class="form-control" placeholder="Street Number" name="streetNumber">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="street-name-column">Street Name</label>
+                                                        <input type="text" id="street-name-column" class="form-control" placeholder="Street Name" name="streetName">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="suburb-column">Suburb</label>
+                                                        <input type="text" id="suburb-column" class="form-control" placeholder="Suburb" name="suburb">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="post-code-column">Post Code</label>
+                                                        <input type="number" id="post-code-column" class="form-control" placeholder="Post Code" name="postCode">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="biz-name-column">Business Name</label>
+                                                        <input type="text" id="biz-name-column" class="form-control" placeholder="Business Full Name" name="bizFullName">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="abn-column">ABN</label>
+                                                        <input type="number" id="abn-column" class="form-control" placeholder="Australian Business Number" name="abn">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="solar-column">Number of Solar</label>
+                                                        <input type="number" id="solar-column" class="form-control" placeholder="Solar" name="solarNo">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="installation-column">Installation Date & Time</label>
+                                                        <input type="datetime-local" id="installation-column" class="form-control" placeholder="Preferred Installation Date" name="installDateTime">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="note-column">Note</label>
+                                                        <textarea class="form-control" id="note-column" rows="3" name="note"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 d-flex justify-content-end">
-                                                    <button type="submit" class="btn btn-primary me-1 mb-1">Update</button>
+                                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -159,34 +197,6 @@ if (!isset($_SESSION['loggedIn'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="row match-height">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Migrations</h4>
-                                </div>
-
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <a href="php/backup.php"><button type="submit" class="btn btn-primary me-1 mb-1">Backup</button></a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <form action="php/restore.php" enctype="multipart/form-data" method="post" class="form">
-                                                        <input type="file" name="dbRestoreFile" id="file" class="form-control">
-                                                        <button type="submit" class="btn btn-primary me-1 mb-1">Restore</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                 </section>
             </div>
 
