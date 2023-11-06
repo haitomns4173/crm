@@ -19,10 +19,7 @@ var lineOptions = {
       name: "Cancelled",
       data: [0, 10, 5, 20, 19, 30, 40, 71, 95]
     }
-  ],
-  xaxis: {
-    categories: [1990, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-  },
+  ]
 };
 var candleOptions = {
 series: [
@@ -518,6 +515,64 @@ var radialBarOptions = {
   },
   labels: ["Apples", "Oranges", "Bananas", "Berries"],
 };
+
+//bar graph for dashboard
+var barOptions = {
+  series: [
+    {
+      name: "Net Profit",
+      data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+    },
+    {
+      name: "Revenue",
+      data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
+    },
+    {
+      name: "Free Cash Flow",
+      data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+    },
+  ],
+  chart: {
+    type: "bar",
+    height: 350,
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: "55%",
+      endingShape: "rounded",
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    show: true,
+    width: 2,
+    colors: ["transparent"],
+  },
+  xaxis: {
+    categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+  },
+  yaxis: {
+    title: {
+      text: "$ (thousands)",
+    },
+  },
+  fill: {
+    opacity: 1,
+  },
+  tooltip: {
+    y: {
+      formatter: function(val) {
+        return "$ " + val + " thousands";
+      },
+    },
+  },
+};
+
+
+
 var bar = new ApexCharts(document.querySelector("#bar"), barOptions);
 var line = new ApexCharts(document.querySelector("#line"), lineOptions);
 var candle = new ApexCharts(document.querySelector("#candle"), candleOptions);

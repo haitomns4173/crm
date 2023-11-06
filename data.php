@@ -34,33 +34,57 @@ if (!isset($_SESSION['loggedIn'])) {
                     <ul class="menu">
                         <li class='sidebar-title'>Main Menu</li>
 
-                        <li class="sidebar-item">
-                            <a href="index.php" class='sidebar-link'>
-                                <i data-feather="home" width="20"></i>
+                        <?php
+                        if ($_SESSION['userPermission'] == 1) {
+
+                        echo "
+                        <li class='sidebar-item'>
+                            <a href='index.php' class='sidebar-link'>
+                                <i data-feather='home' width='20'></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="agents.php" class='sidebar-link'>
-                                <i data-feather="users" width="20"></i>
+                        <li class='sidebar-item'>
+                            <a href='agents.php' class='sidebar-link'>
+                                <i data-feather='users' width='20'></i>
                                 <span>Agents</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item active">
-                            <a href="data.php" class='sidebar-link'>
-                                <i data-feather="layers" width="20"></i>
+                        <li class='sidebar-item active'>
+                            <a href='data.php' class='sidebar-link'>
+                                <i data-feather='layers' width='20'></i>
                                 <span>Data</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="profile.php" class='sidebar-link'>
-                                <i data-feather="user" width="20"></i>
+                        <li class='sidebar-item'>
+                            <a href='profile.php' class='sidebar-link'>
+                                <i data-feather='user' width='20'></i>
                                 <span>Profile</span>
                             </a>
                         </li>
+                        ";
+                        }
+                        else{
+                            echo "
+                            <li class='sidebar-item active'>
+                                <a href='data.php' class='sidebar-link'>
+                                    <i data-feather='layers' width='20'></i>
+                                    <span>Data</span>
+                                </a>
+                            </li>
+
+                            <li class='sidebar-item'>
+                                <a href='profile.php' class='sidebar-link'>
+                                    <i data-feather='user' width='20'></i>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                            ";
+                        }
+                        ?>
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -124,7 +148,13 @@ if (!isset($_SESSION['loggedIn'])) {
                                     <?php
                                     include 'php/sqlConnection.php';
 
-                                    $sql = "SELECT * FROM `data` WHERE staffName = '$_SESSION[username]' ORDER BY dataID DESC;";
+                                    if($_SESSION['userPermission'] == 1){
+                                        $sql = "SELECT * FROM `data` ORDER BY dataID DESC;";
+                                    }
+                                    else{
+                                        $sql = "SELECT * FROM `data` WHERE staffName = '$_SESSION[username]' ORDER BY dataID DESC;";
+                                    }
+                                    
                                     $result = mysqli_query($conn, $sql);
                                     while($row = mysqli_fetch_assoc($result)){
                                         echo "<tr>";
@@ -139,7 +169,7 @@ if (!isset($_SESSION['loggedIn'])) {
                                         else if($row['status'] == 4){
                                             echo "<td><span class='badge bg-info'>Rescheduled</span></td>";
                                         }
-                                        else if($row['status'] == 3){
+                                        else if($row['status'] == 5){
                                             echo "<td><span class='badge bg-danger'>Cancelled</span></td>";
                                         }
                                         else{
@@ -155,14 +185,19 @@ if (!isset($_SESSION['loggedIn'])) {
                                             echo "<td><i>$row[verifierComment]</i></td>";
                                         }
                                         echo "<td>
-                                        <a href='dataEdit.php?id=$row[dataID]'>
+                                        <a href='dataUpdate.php?dataId=$row[dataID]'>
                                         <button type='button' class='btn btn-primary'><i data-feather='edit-3' width='20'></i></button>
                                         </a> 
                                         
-                                        <a href='php/deleteData.php?id=$row[dataID]'>
+                                        <a href='php/deleteData.php?dataId=$row[dataID]'>
                                         <button type='button' class='btn btn-danger'><i data-feather='trash-2' width='20'></i></button>
+                                        </a>";
+                                        if($_SESSION['userPermission'] == 1){
+                                        echo "<a href='dataInfo.php?dataId=$row[dataID]'>
+                                        <button type='button' class='btn btn-success'><i data-feather='info' width='20'></i></button>
                                         </a>
                                         </td>";
+                                        }
                                         echo "</tr>";
                                     }
                                     ?>
@@ -178,12 +213,12 @@ if (!isset($_SESSION['loggedIn'])) {
                     <div class="float-start">
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> &copy; Haitomns Groups
+                        </script> &copy; Lead Express Private Limited
                     </div>
                     <div class="float-end">
                         <p>
                             Programmed with
-                            <span class="text-danger"><i class="bi bi-heart"></i></span> by
+                            <span class="text-danger"><i data-feather="heart"></i></span> by
                             <a href="https://haitomns.com">Haitomns Groups</a>
                         </p>
                     </div>

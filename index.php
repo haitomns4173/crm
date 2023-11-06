@@ -1,6 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['loggedIn'])) {
+if (isset($_SESSION['loggedIn'])) {
+    if($_SESSION['userPermission'] != 1){
+        header('Location: data.php');
+        exit;
+    }
+}
+else{
     header('Location: auth-login.php');
     exit;
 }
@@ -77,7 +83,6 @@ if (!isset($_SESSION['loggedIn'])) {
                             <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                                 <div class="avatar me-1">
                                     <?php
-                                    //generate a random alphabet between a to d
                                     $randomAlphabet = chr(rand(97, 100));
                                     echo "<img src='assets/images/avatar/avatar-$randomAlphabet.png' alt='' srcset=''>";
                                     ?>
@@ -99,6 +104,29 @@ if (!isset($_SESSION['loggedIn'])) {
                     <h3>Profile Page</h3>
                     <p class="text-subtitle text-muted">Lead Express Private Limited</p>
                 </div>
+                <?php
+                    include 'php\sqlConnection.php';
+
+                    $sql_uploaded = "SELECT COUNT(dataID) FROM `data` WHERE DATE(uploadedDateTime) = CURRENT_DATE();";
+                    $sql_installed = "SELECT COUNT(dataID) FROM `data` WHERE status = 3 && DATE(uploadedDateTime) = CURRENT_DATE();";
+                    $sql_confirmed = "SELECT COUNT(dataID) FROM `data` WHERE status = 2 && DATE(uploadedDateTime) = CURRENT_DATE();";
+                    $sql_cancelled = "SELECT COUNT(dataID) FROM `data` WHERE status = 5 && DATE(uploadedDateTime) = CURRENT_DATE();";
+
+                    $result_uploaded = mysqli_query($conn, $sql_uploaded);
+                    $result_installed = mysqli_query($conn, $sql_installed);
+                    $result_confirmed = mysqli_query($conn, $sql_confirmed);
+                    $result_cancelled = mysqli_query($conn, $sql_cancelled);
+
+                    $row_uploaded = mysqli_fetch_array($result_uploaded);
+                    $row_installed = mysqli_fetch_array($result_installed);
+                    $row_confirmed = mysqli_fetch_array($result_confirmed);
+                    $row_cancelled = mysqli_fetch_array($result_cancelled);
+
+                    $data_uploaded = $row_uploaded[0];
+                    $data_installed = $row_installed[0];
+                    $data_confirmed = $row_confirmed[0];
+                    $data_cancelled = $row_cancelled[0];
+                ?>
                 <section class="section">
                     <div class="row mb-2">
                         <div class="col-12 col-md-3">
@@ -108,7 +136,7 @@ if (!isset($_SESSION['loggedIn'])) {
                                         <div class='px-3 py-3 d-flex justify-content-between'>
                                             <h3 class='card-title'>UPLOADED</h3>
                                             <div class="card-right d-flex align-items-center">
-                                                <p> 50 </p>
+                                                <p> <?php echo $data_uploaded ?> </p>
                                             </div>
                                         </div>
                                     </div>
@@ -122,7 +150,7 @@ if (!isset($_SESSION['loggedIn'])) {
                                         <div class='px-3 py-3 d-flex justify-content-between'>
                                             <h3 class='card-title'>INSTALLED</h3>
                                             <div class="card-right d-flex align-items-center">
-                                                <p>5322</p>
+                                                <p> <?php echo $data_installed ?> </p>
                                             </div>
                                         </div>
                                     </div>
@@ -136,7 +164,7 @@ if (!isset($_SESSION['loggedIn'])) {
                                         <div class='px-3 py-3 d-flex justify-content-between'>
                                             <h3 class='card-title'>CONFIRMED</h3>
                                             <div class="card-right d-flex align-items-center">
-                                                <p>1,544</p>
+                                                <p> <?php echo $data_confirmed ?> </p>
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +178,7 @@ if (!isset($_SESSION['loggedIn'])) {
                                         <div class='px-3 py-3 d-flex justify-content-between'>
                                             <h3 class='card-title'>CANCELLED</h3>
                                             <div class="card-right d-flex align-items-center">
-                                                <p>423</p>
+                                                <p> <?php echo $data_cancelled ?> </p>
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +193,7 @@ if (!isset($_SESSION['loggedIn'])) {
                                 <h4>Auto Generated Report</h4>
                             </div>
                             <div class="card-body">
-                                <div id="line"></div>
+                                <div id="bar"></div>
                             </div>
                         </div>
                     </div>
@@ -177,12 +205,12 @@ if (!isset($_SESSION['loggedIn'])) {
                     <div class="float-start">
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> &copy; Haitomns Groups
+                        </script> &copy; Lead Express Private Limited
                     </div>
                     <div class="float-end">
                         <p>
                             Programmed with
-                            <span class="text-danger"><i class="bi bi-heart"></i></span> by
+                            <span class="text-danger"><i data-feather="heart"></i></span> by
                             <a href="https://haitomns.com">Haitomns Groups</a>
                         </p>
                     </div>
@@ -197,7 +225,7 @@ if (!isset($_SESSION['loggedIn'])) {
     <script src="assets/vendors/chartjs/Chart.min.js"></script>
     <script src="assets/vendors/apexcharts/apexcharts.min.js"></script>
     <script src="assets/js/pages/dashboard.js"></script>
-    <script src="assets/js/pages/ui-apexchart.js"></script>
+    <script src="assets/js/pages/bar.js"></script>
 
     <script src="assets/js/main.js"></script>
 </body>

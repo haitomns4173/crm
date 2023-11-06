@@ -16,6 +16,8 @@
     $install_date_time = $_POST['installDateTime'];
     $note = $_POST['note'];
 
+    echo "<script>alert('$note')</script>";
+
     $staffName = $_SESSION['username'];
 
     if(strlen($full_name) > 512 || strlen($full_name) < 1){

@@ -30,7 +30,13 @@ if (!isset($_POST['usernameInput'], $_POST['passwordInput'])) {
                 $sql_login = "UPDATE `userdetails` SET `lastLogin`= CURRENT_TIMESTAMP WHERE `userIdentity` = $userId";
                 $result_login = mysqli_query($conn, $sql_login);
 
-                header('Location: ../index.php');
+                if($userPermission == 1){
+                    header('Location: ../index.php');
+                }
+                else{
+                    header('Location: ../data.php');
+                }
+                
             } else {
                 echo '<script>alert("Incorrect Username or Password");</script>';
                 echo '<script>window.location="../auth-login.php"</script>';

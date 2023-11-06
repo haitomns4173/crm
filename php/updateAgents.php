@@ -16,11 +16,11 @@ if ($agentName == "" || $username == "" || $password == "" || $permission == "")
     if(isset($_GET['userID'])){
         $userID = $_GET['userID'];
     
-        if (strcmp($password, "Why you want to see your own password?")) {
+        if (strcmp($password, "Why you want to see your own password?") == 0) {
             $sql = "UPDATE `userdetails` SET `userPermissionNumber`='$permission',`agentName`='$agentName',`username`='$username' WHERE userIdentity = '$userID'";
         } else {
-            $password = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "UPDATE `userdetails` SET `userPermissionNumber`='$permission',`agentName`='$agentName',`username`='$username',`password`='$password' WHERE userIdentity = '$userID'";
+            $password_encrypt = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "UPDATE `userdetails` SET `userPermissionNumber`='$permission',`agentName`='$agentName',`username`='$username',`password`='$password_encrypt' WHERE userIdentity = '$userID'";
         }
 
         $result = mysqli_query($conn, $sql);

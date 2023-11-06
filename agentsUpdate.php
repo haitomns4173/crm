@@ -1,6 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['loggedIn'])) {
+if (isset($_SESSION['loggedIn'])) {
+    if($_SESSION['userPermission'] != 1){
+        header('Location: data.php');
+        exit;
+    }
+}
+else{
     header('Location: auth-login.php');
     exit;
 }
@@ -173,12 +179,12 @@ if (!isset($_SESSION['loggedIn'])) {
                     <div class="float-start">
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> &copy; Haitomns Groups
+                        </script> &copy; Lead Express Private Limited
                     </div>
                     <div class="float-end">
                         <p>
                             Programmed with
-                            <span class="text-danger"><i class="bi bi-heart"></i></span> by
+                            <span class="text-danger"><i data-feather="heart"></i></span> by
                             <a href="https://haitomns.com">Haitomns Groups</a>
                         </p>
                     </div>

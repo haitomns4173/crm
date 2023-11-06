@@ -30,36 +30,60 @@ if (!isset($_SESSION['loggedIn'])) {
                     <img src="assets/images/logo.svg" alt="" srcset="">
                 </div>
                 <div class="sidebar-menu">
-                    <ul class="menu">
+                <ul class="menu">
                         <li class='sidebar-title'>Main Menu</li>
 
-                        <li class="sidebar-item">
-                            <a href="index.php" class='sidebar-link'>
-                                <i data-feather="home" width="20"></i>
+                        <?php
+                        if ($_SESSION['userPermission'] == 1) {
+
+                        echo "
+                        <li class='sidebar-item'>
+                            <a href='index.php' class='sidebar-link'>
+                                <i data-feather='home' width='20'></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="agents.php" class='sidebar-link'>
-                                <i data-feather="users" width="20"></i>
+                        <li class='sidebar-item'>
+                            <a href='agents.php' class='sidebar-link'>
+                                <i data-feather='users' width='20'></i>
                                 <span>Agents</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="data.php" class='sidebar-link'>
-                                <i data-feather="layers" width="20"></i>
+                        <li class='sidebar-item'>
+                            <a href='data.php' class='sidebar-link'>
+                                <i data-feather='layers' width='20'></i>
                                 <span>Data</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item active">
-                            <a href="profile.php" class='sidebar-link'>
-                                <i data-feather="user" width="20"></i>
+                        <li class='sidebar-item active'>
+                            <a href='profile.php' class='sidebar-link'>
+                                <i data-feather='user' width='20'></i>
                                 <span>Profile</span>
                             </a>
                         </li>
+                        ";
+                        }
+                        else{
+                            echo "
+                            <li class='sidebar-item'>
+                                <a href='data.php' class='sidebar-link'>
+                                    <i data-feather='layers' width='20'></i>
+                                    <span>Data</span>
+                                </a>
+                            </li>
+
+                            <li class='sidebar-item active'>
+                                <a href='profile.php' class='sidebar-link'>
+                                    <i data-feather='user' width='20'></i>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                            ";
+                        }
+                        ?>
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -107,6 +131,7 @@ if (!isset($_SESSION['loggedIn'])) {
                                 </div>
                                 <?php
                                 include 'php/sqlConnection.php';
+                                
                                 $sql = "SELECT `userIdentity`, `userPermissionNumber`, `agentName`, `username` FROM `userdetails` WHERE userdetails.userIdentity = '$_SESSION[id]'";
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
@@ -136,7 +161,14 @@ if (!isset($_SESSION['loggedIn'])) {
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-group">
                                                         <label for="user-type">Agent Type</label>
-                                                        <select name="userPermissionShow" id="user-type" class="form-control">
+                                                        <?php
+                                                            if($row['userPermissionNumber'] == 1){
+                                                                echo "<select name='userPermissionShow' id='user-type' class='form-control'>";
+                                                            } else {
+                                                                echo "<select name='userPermissionShow' id='user-type' class='form-control' disabled>";
+                                                            }
+                                                        ?>
+                                                        
                                                             <?php
                                                             if ($row['userPermissionNumber'] == 1) {
                                                                 echo "<option value='1' selected>Central Supervisor</option>";
@@ -159,27 +191,31 @@ if (!isset($_SESSION['loggedIn'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="row match-height">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Migrations</h4>
-                                </div>
-
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <a href="php/backup.php"><button type="submit" class="btn btn-primary me-1 mb-1">Backup</button></a>
+                    <?php
+                        if($_SESSION['userPermission'] == 1){
+                            echo "
+                            <div class='row match-height'>
+                            <div class='col-12'>
+                                <div class='card'>
+                                    <div class='card-header'>
+                                        <h4 class='card-title'>Migrations</h4>
+                                    </div>
+    
+                                    <div class='card-content'>
+                                        <div class='card-body'>
+                                            <div class='row'>
+                                                <div class='col-md-6 col-12'>
+                                                    <div class='form-group'>
+                                                        <a href='php/backup.php'><button type='submit' class='btn btn-primary me-1 mb-1'>Backup</button></a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <form action="php/restore.php" enctype="multipart/form-data" method="post" class="form">
-                                                        <input type="file" name="dbRestoreFile" id="file" class="form-control">
-                                                        <button type="submit" class="btn btn-primary me-1 mb-1">Restore</button>
-                                                    </form>
+                                                <div class='col-md-6 col-12'>
+                                                    <div class='form-group'>
+                                                        <form action='php/restore.php' enctype='multipart/form-data' method='post' class='form'>
+                                                            <input type='file' name='dbRestoreFile' id='file' class='form-control'>
+                                                            <button type='submit' class='btn btn-primary me-1 mb-1'>Restore</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,6 +223,9 @@ if (!isset($_SESSION['loggedIn'])) {
                                 </div>
                             </div>
                         </div>
+                            ";
+                        }
+                    ?>
                 </section>
             </div>
 
@@ -195,12 +234,12 @@ if (!isset($_SESSION['loggedIn'])) {
                     <div class="float-start">
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> &copy; Haitomns Groups
+                        </script> &copy; Lead Express Private Limited
                     </div>
                     <div class="float-end">
                         <p>
                             Programmed with
-                            <span class="text-danger"><i class="bi bi-heart"></i></span> by
+                            <span class="text-danger"><i data-feather="heart"></i></span> by
                             <a href="https://haitomns.com">Haitomns Groups</a>
                         </p>
                     </div>

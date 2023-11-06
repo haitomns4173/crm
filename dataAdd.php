@@ -11,7 +11,7 @@ if (!isset($_SESSION['loggedIn'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data - Lead Express Admin Dashboard</title>
+    <title>Data Add - Lead Express Admin Dashboard</title>
 
     <link rel="stylesheet" href="assets/css/bootstrap.css">
 
@@ -30,36 +30,60 @@ if (!isset($_SESSION['loggedIn'])) {
                     <img src="assets/images/logo.svg" alt="" srcset="">
                 </div>
                 <div class="sidebar-menu">
-                    <ul class="menu">
+                <ul class="menu">
                         <li class='sidebar-title'>Main Menu</li>
 
-                        <li class="sidebar-item">
-                            <a href="index.php" class='sidebar-link'>
-                                <i data-feather="home" width="20"></i>
+                        <?php
+                        if ($_SESSION['userPermission'] == 1) {
+
+                        echo "
+                        <li class='sidebar-item'>
+                            <a href='index.php' class='sidebar-link'>
+                                <i data-feather='home' width='20'></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="agents.php" class='sidebar-link'>
-                                <i data-feather="users" width="20"></i>
+                        <li class='sidebar-item'>
+                            <a href='agents.php' class='sidebar-link'>
+                                <i data-feather='users' width='20'></i>
                                 <span>Agents</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item active">
-                            <a href="data.php" class='sidebar-link'>
-                                <i data-feather="layers" width="20"></i>
+                        <li class='sidebar-item active'>
+                            <a href='data.php' class='sidebar-link'>
+                                <i data-feather='layers' width='20'></i>
                                 <span>Data</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="profile.php" class='sidebar-link'>
-                                <i data-feather="user" width="20"></i>
+                        <li class='sidebar-item'>
+                            <a href='profile.php' class='sidebar-link'>
+                                <i data-feather='user' width='20'></i>
                                 <span>Profile</span>
                             </a>
                         </li>
+                        ";
+                        }
+                        else{
+                            echo "
+                            <li class='sidebar-item active'>
+                                <a href='data.php' class='sidebar-link'>
+                                    <i data-feather='layers' width='20'></i>
+                                    <span>Data</span>
+                                </a>
+                            </li>
+
+                            <li class='sidebar-item'>
+                                <a href='profile.php' class='sidebar-link'>
+                                    <i data-feather='user' width='20'></i>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                            ";
+                        }
+                        ?>
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -205,12 +229,12 @@ if (!isset($_SESSION['loggedIn'])) {
                     <div class="float-start">
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> &copy; Haitomns Groups
+                        </script> &copy; Lead Express Private Limited
                     </div>
                     <div class="float-end">
                         <p>
                             Programmed with
-                            <span class="text-danger"><i class="bi bi-heart"></i></span> by
+                            <span class="text-danger"><i data-feather="heart"></i></span> by
                             <a href="https://haitomns.com">Haitomns Groups</a>
                         </p>
                     </div>

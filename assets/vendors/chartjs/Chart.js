@@ -5964,7 +5964,7 @@ var controller_line = core_datasetController.extend({
 		var config = me._config;
 		var custom = element.custom || {};
 		var options = me.chart.options;
-		var lineOptions = options.elements.line;
+		var  = options.elements.line;
 		var values = core_datasetController.prototype._resolveDatasetElementOptions.apply(me, arguments);
 
 		// The default behavior of lines is to break at null values, according
